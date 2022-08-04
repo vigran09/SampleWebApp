@@ -1,0 +1,34 @@
+{
+    "places": [
+      {
+        "id": 0,
+        "name": "Zaubar HQ",
+        "latitude": 52.49814391277968,
+        "longitude": 13.350597261364575
+      },
+      {
+        "id": 1,
+        "name": "Brandenburg Gate",
+        "latitude": 52.51773093999005,
+        "longitude": 13.378205734707386
+      },
+      {
+        "id": 2,
+        "name": "Berliner Fernsehturm",
+        "latitude": 52.52284911682181, 
+        "longitude": 13.408761457602125
+      },
+      {
+        "id": 3,
+        "name": "Victory Column",
+        "latitude": 52.5141792015642,  
+        "longitude": 13.351941545927078
+      },
+      {
+        "id": 4,
+        "name": "Pergamonmuseum",
+        "latitude": 52.52337134623768,  
+        "longitude": 13.396058516623414
+      }
+    ]
+  }

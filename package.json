@@ -5,13 +5,19 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "export": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "google-map-react": "^2.2.0",
     "next": "12.2.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-responsive-carousel": "^3.2.23",
+    "reactstrap": "^9.1.2"
   },
   "devDependencies": {
     "eslint": "8.20.0",
