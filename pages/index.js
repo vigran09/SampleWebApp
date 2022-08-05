@@ -9,7 +9,7 @@ const Maps = () => {
 
   useEffect(() => {
     const loader = new Loader({
-      apiKey: process.env.NEXT_PUBLIC_API_KEY,
+      apiKey: 'AIzaSyAqJUf7ZdKXNZO8KG8mC6VHDv-tiHy_QhI',
       version: 'weekly',
     });
     let map; 
@@ -48,7 +48,7 @@ const Maps = () => {
         console.log(`Latitude : ${crd.latitude}`);
         console.log(`Longitude: ${crd.longitude}`);
         console.log(`More or less ${crd.accuracy} meters.`);
-        new google.maps.Marker({
+        const marker = new google.maps.Marker({
             map: map,
             position: {
               lat: crd.latitude,
@@ -57,6 +57,9 @@ const Maps = () => {
             title: "Current Location",
             icon: icon
           }); 
+          marker.addListener("click", () => {
+             console.log("marker");           
+          });
       };
     navigator.geolocation.getCurrentPosition(success);
     
