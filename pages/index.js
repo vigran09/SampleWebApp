@@ -1,7 +1,7 @@
 import {useEffect, useRef} from 'react';
 import {Loader} from '@googlemaps/js-api-loader';
 import React from "react";
-import locations from '../locationsChennai.json';
+import locations from '../locations.json';
 
 const Maps = () => {
 
@@ -16,7 +16,7 @@ const Maps = () => {
     loader.load().then(() => {
       const google = window.google;
       map = new google.maps.Map(googlemap.current, {
-        center: {lat: 12.8996, lng: 80.2209},
+        center: {lat: 52.517411641651194,  lng: 13.394634445240385},
         zoom: 13, mapId: '8ee3dc81b152ef98'
         ,fullscreenControl: false, 
         mapTypeControl: false, 
