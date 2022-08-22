@@ -10,6 +10,7 @@ const Maps = () => {
   useEffect(() => {
     const loader = new Loader({
       apiKey: 'AIzaSyAqJUf7ZdKXNZO8KG8mC6VHDv-tiHy_QhI',
+      version: 'weekly',
     });
     let map; 
     loader.load().then(() => {
@@ -26,7 +27,7 @@ const Maps = () => {
 
     for (let i = 0; i < locations.places.length; i++) {
         const userPlace = locations.places[i];
-        const marker = new google.maps.Marker({
+        new google.maps.Marker({
           map: map,
           position: {
             lat: userPlace.latitude,
@@ -34,11 +35,6 @@ const Maps = () => {
           },
           title: userPlace.name,
         });
-        marker.addListener("click", () => {
-          console.log(userPlace.name);  
-          map.setZoom(16);
-          map.setCenter(marker.getPosition());         
-       });
       }
       const icon = {
         url: 'https://i.imgur.com/9v6uW8U.png', 
@@ -62,9 +58,7 @@ const Maps = () => {
             icon: icon
           }); 
           marker.addListener("click", () => {
-             console.log("Current Location"); 
-             map.setZoom(16);
-             map.setCenter(marker.getPosition());          
+             console.log("marker");           
           });
       };
     navigator.geolocation.getCurrentPosition(success);
