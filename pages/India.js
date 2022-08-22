@@ -1,7 +1,7 @@
 import {useEffect, useRef} from 'react';
 import {Loader} from '@googlemaps/js-api-loader';
 import React from "react";
-import locations from '../locations.json';
+import locations from '../locationsChennai.json';
 
 const Maps = () => {
 
@@ -10,12 +10,15 @@ const Maps = () => {
   useEffect(() => {
     const loader = new Loader({
       apiKey: 'AIzaSyAqJUf7ZdKXNZO8KG8mC6VHDv-tiHy_QhI',
+      version: 'weekly',
     });
     let map; 
     loader.load().then(() => {
       const google = window.google;
       map = new google.maps.Map(googlemap.current, {
-        center: {lat: 52.517411641651194,  lng: 13.394634445240385},
+        center: {lat: 12.8996,  lng: 80.2209},
+        // 12.8996,80.2209
+        // 52.517411641651194,13.394634445240385
         zoom: 13, mapId: '8ee3dc81b152ef98'
         ,fullscreenControl: false, 
         mapTypeControl: false, 
@@ -35,7 +38,6 @@ const Maps = () => {
           title: userPlace.name,
         });
         marker.addListener("click", () => {
-          console.log(userPlace.name);  
           map.setZoom(16);
           map.setCenter(marker.getPosition());         
        });
@@ -48,10 +50,6 @@ const Maps = () => {
     };
       function success(pos) {
         const crd = pos.coords;
-        console.log('Your current position is:');
-        console.log(`Latitude : ${crd.latitude}`);
-        console.log(`Longitude: ${crd.longitude}`);
-        console.log(`More or less ${crd.accuracy} meters.`);
         const marker = new google.maps.Marker({
             map: map,
             position: {
@@ -62,7 +60,6 @@ const Maps = () => {
             icon: icon
           }); 
           marker.addListener("click", () => {
-             console.log("Current Location"); 
              map.setZoom(16);
              map.setCenter(marker.getPosition());          
           });
