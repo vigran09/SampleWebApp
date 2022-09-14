@@ -1,30 +1,130 @@
 import {useEffect, useRef} from 'react';
 import {Loader} from '@googlemaps/js-api-loader';
 import React from "react";
-import locations from '../locations.json';
+import {
+  AmbientLight,
+  DirectionalLight,
+  Matrix4,
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer,
+} from "three";
 
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import locations from '../locations.json';
+ 
 const Maps = () => {
 
   const googlemap = useRef(null);
-
+  const apiOptions = {
+    apiKey: 'AIzaSyAqJUf7ZdKXNZO8KG8mC6VHDv-tiHy_QhI',
+    version: "beta"
+  };
+  const mapOptions = {
+    "center": { lat: 52.498013281042056,  lng: 13.351595043107444 },
+    "zoom": 17,
+    "heading": 320,
+    "tilt": 47.5,
+  }
   useEffect(() => {
-    const loader = new Loader({
-      apiKey: 'AIzaSyAqJUf7ZdKXNZO8KG8mC6VHDv-tiHy_QhI',
-    });
-    let map; 
+    const loader = new Loader(apiOptions);
     loader.load().then(() => {
       const google = window.google;
-      map = new google.maps.Map(googlemap.current, {
-        center: {lat: 52.517411641651194,  lng: 13.394634445240385},
-        zoom: 13, mapId: '8ee3dc81b152ef98'
-        ,fullscreenControl: false, 
-        mapTypeControl: false, 
+      const map = new google.maps.Map(googlemap.current,  {
+        center: { lat: 52.498013281042056,  lng: 13.351595043107444 },
+        zoom: 18,
+        heading: 320,
+        tilt: 47.5,
+        mapId:"d78e050a3a97c54b",
+        mapTypeControl: false,
         streetViewControl: false, 
-        zoomControl: false, 
       }
-      );
+      );   
+      // initWebglOverlayView(map);
+      AddMarkers(map);
+    });
 
-    for (let i = 0; i < locations.places.length; i++) {
+    function initWebglOverlayView(map){
+      let scene, renderer, camera, loader;
+      const webglOverlayView = new google.maps.WebGLOverlayView();
+    
+      webglOverlayView.onAdd = () => {
+        // Set up the scene.
+    
+        scene = new Scene();
+    
+        camera = new PerspectiveCamera();
+    
+        const ambientLight = new AmbientLight(0xffffff, 0.75); // Soft white light.
+        scene.add(ambientLight);
+    
+        const directionalLight = new DirectionalLight(0xffffff, 0.25);
+        directionalLight.position.set(0.5, -1, 0.5);
+        scene.add(directionalLight);
+    
+        // Load the model.
+        loader = new GLTFLoader();
+        const source =
+          "https://raw.githubusercontent.com/googlemaps/js-samples/main/assets/pin.gltf";
+        loader.load(source, (gltf) => {
+          gltf.scene.scale.set(7, 7, 7);
+          gltf.scene.rotation.x = Math.PI; // Rotations are in radians.
+          scene.add(gltf.scene);
+        });
+      };
+    
+      webglOverlayView.onContextRestored = ({ gl }) => {
+        // Create the js renderer, using the
+        // maps's WebGL rendering context.
+        renderer = new WebGLRenderer({
+          canvas: gl.canvas,
+          context: gl,
+          ...gl.getContextAttributes(),
+        });
+        renderer.autoClear = false;
+    
+        // Wait to move the camera until the 3D model loads.
+        loader.manager.onLoad = () => {
+          renderer.setAnimationLoop(() => {
+            webglOverlayView.requestRedraw();
+            const { tilt, heading, zoom } = mapOptions;
+            map.moveCamera({ tilt, heading, zoom });
+    
+            // Rotate the map 360 degrees.
+            if (mapOptions.tilt < 67.5) {
+              mapOptions.tilt += 0.5;
+            } else if (mapOptions.heading <= 360) {
+              mapOptions.heading += 0.2;
+              mapOptions.zoom -= 0.0005;
+            } else {
+              renderer.setAnimationLoop(null);
+            }
+          });
+        };
+      };
+    
+      webglOverlayView.onDraw = ({ gl, transformer })=> {
+        const latLngAltitudeLiteral= {
+          lat: 52.498013281042056,
+          lng: 13.351595043107444,
+          altitude: 50,
+        };
+    
+        // Update camera matrix to ensure the model is georeferenced correctly on the map.
+        const matrix = transformer.fromLatLngAltitude(latLngAltitudeLiteral);
+        camera.projectionMatrix = new Matrix4().fromArray(matrix);
+    
+        webglOverlayView.requestRedraw();
+        renderer.render(scene, camera);
+    
+        // Sometimes it is necessary to reset the GL state.
+        renderer.resetState();
+      };
+      webglOverlayView.setMap(map);
+    }
+
+    function AddMarkers(map){
+      for (let i = 0; i < locations.places.length; i++) {
         const userPlace = locations.places[i];
         const marker = new google.maps.Marker({
           map: map,
@@ -34,10 +134,10 @@ const Maps = () => {
           },
           title: userPlace.name,
         });
-        marker.addListener("click", () => {
+        marker.addListener("click", event => {
           console.log(userPlace.name);  
-          map.setZoom(16);
-          map.setCenter(marker.getPosition());         
+          const location = { lat: event.latLng.lat(), lng: event.latLng.lng() };
+          map.panTo(location);         
        });
       }
       const icon = {
@@ -46,34 +146,10 @@ const Maps = () => {
         origin: new google.maps.Point(0,0), 
         anchor: new google.maps.Point(0, 0) 
     };
-      function success(pos) {
-        const crd = pos.coords;
-        console.log('Your current position is:');
-        console.log(`Latitude : ${crd.latitude}`);
-        console.log(`Longitude: ${crd.longitude}`);
-        console.log(`More or less ${crd.accuracy} meters.`);
-        const marker = new google.maps.Marker({
-            map: map,
-            position: {
-              lat: crd.latitude,
-              lng: crd.longitude,
-            },
-            title: "Current Location",
-            icon: icon
-          }); 
-          marker.addListener("click", () => {
-             console.log("Current Location"); 
-             map.setZoom(16);
-             map.setCenter(marker.getPosition());          
-          });
-      };
-    navigator.geolocation.getCurrentPosition(success);
-    
-    });
+    }
   });
   return (
     <div id="map" ref={googlemap} />
-
   );
 };
 export default Maps;
