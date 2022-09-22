@@ -16,13 +16,15 @@
     "@googlemaps/three": "^3.0.3",
     "@react-three/drei": "^9.23.7",
     "@react-three/fiber": "^8.6.0",
+    "@tweenjs/tween.js": "^18.6.4",
     "google-map-react": "^2.2.0",
     "next": "^12.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-responsive-carousel": "^3.2.23",
     "reactstrap": "^9.1.2",
-    "three": "^0.143.0"
+    "three": "^0.143.0",
+    "tweenjs": "^1.0.2"
   },
   "devDependencies": {
     "eslint": "8.20.0",

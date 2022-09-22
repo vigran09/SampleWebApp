@@ -25,7 +25,7 @@ a {
     color-scheme: dark;
   }
   body {
-    color: white;
+    color: rgb(0, 0, 0);
     background: black;
   }
 
@@ -60,6 +60,6 @@ body {
   cursor: pointer;
 }
 .ui-button:hover {
-  background: rgb(231, 168, 168);
+  background: rgb(250, 80, 80);
 }
 }
