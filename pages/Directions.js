@@ -1,8 +1,16 @@
-import {useEffect, useRef} from 'react';
+import React from 'react'; 
+import{useEffect, useRef, Component} from 'react';
 import {Loader} from '@googlemaps/js-api-loader';
-import React from "react";
 import locations from '../locations.json';
+import {
+  withGoogleMap,
+  withScriptjs,
+  GoogleMap,
+  DirectionsRenderer
+} from "react-google-maps";
  
+   
+
 const Maps = () => {
 
   const googlemap = useRef(null);
@@ -22,8 +30,53 @@ const Maps = () => {
     const loader = new Loader(apiOptions);
     loader.load().then(() => {
       LoadMap();
-      AddMarkers(map);
+    AddMarkers(map);
+    Directions();
     });
+
+    function Directions(){
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer(
+      {
+        preserveViewport: true,
+        suppressMarkers: true
+    }
+    );
+    directionsRenderer.setMap(map);
+    var start = new google.maps.Marker({
+        position: {
+            lat:52.498013281042056,
+            lng:13.351595043107444
+        },
+        map: map,
+      });
+  
+      var end = new google.maps.Marker({
+        position: {
+          lat: 52.49902692990726, 
+          lng: 13.354799235506542
+        },
+        map: map,
+      });
+
+    directionsService.route({
+        origin: start.position,
+        destination: end.position,
+        travelMode: 'WALKING'
+      }, function(response, status) {
+        console.log(status);
+        if (status === 'OK') {
+            console.log('Ok');
+            new google.maps.DirectionsRenderer({
+                suppressMarkers: true,
+                directions: response,
+                map: map,
+              });
+        } else {
+          window.alert('Directions request failed due to ' + status);
+        }
+      });
+}
 
     function LoadMap(){
       const google = window.google;
