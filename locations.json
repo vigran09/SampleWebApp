@@ -2,33 +2,39 @@
     "places": [
       {
         "id": 0,
-        "name": "Zaubar HQ",
-        "latitude": 52.49814391277968,
-        "longitude": 13.350597261364575
+        "name": "Manuel Rossner - Yellow",
+        "latitude": 50.14474,
+        "longitude": 11.05938
       },
       {
         "id": 1,
-        "name": "Brandenburg Gate",
-        "latitude": 52.51773093999005,
-        "longitude": 13.378205734707386
+        "name": "Nadine Kolodziey - Jump the Light",
+        "latitude": 50.14578,
+        "longitude": 11.06559
       },
       {
         "id": 2,
-        "name": "Berliner Fernsehturm",
-        "latitude": 52.52284911682181, 
-        "longitude": 13.408761457602125
+        "name": "kennedy+swan - BÆB",
+        "latitude": 50.14596, 
+        "longitude": 11.05995
       },
       {
         "id": 3,
-        "name": "Victory Column",
-        "latitude": 52.5141792015642,  
-        "longitude": 13.351941545927078
+        "name": "Pascal Sender - noch ohne Titel",
+        "latitude": 50.14531,  
+        "longitude": 11.06184
       },
       {
         "id": 4,
-        "name": "Pergamonmuseum",
-        "latitude": 52.52337134623768,  
-        "longitude": 13.396058516623414
+        "name": "Barbara Herold - Pool Party",
+        "latitude": 50.14353,  
+        "longitude": 11.08270
+      },
+      {
+        "id": 4,
+        "name": "Archiv der Zukunft",
+        "latitude": 50.14353,  
+        "longitude": 11.06310
       }
     ]
   }

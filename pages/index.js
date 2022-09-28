@@ -1,7 +1,8 @@
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, Fragment} from 'react';
 import {Loader} from '@googlemaps/js-api-loader';
 import React from "react";
 import locations from '../locations.json';
+import Carousel from './CarouselSlider';
  
 const Maps = () => {
 
@@ -15,8 +16,16 @@ const Maps = () => {
     "heading": 320,
     "tilt": 47.5,
   }
+  const handleCallback = (childData) =>
+  {
+    console.log(childData);
+    const location = { lat: locations.places[childData].latitude, lng: locations.places[childData].longitude };
+    console.log(location);
+    map.panTo(location);
+  } 
   let map;
   let isAnimating = false;
+
 
   useEffect(() => {
     const loader = new Loader(apiOptions);
@@ -105,7 +114,10 @@ const Maps = () => {
     }
   });
   return (
+    <Fragment>
     <div id="map" ref={googlemap} />
+    <Carousel parentCallback = {handleCallback}/>
+    </Fragment>
   );
 };
 export default Maps;
