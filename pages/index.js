@@ -16,12 +16,10 @@ const Maps = () => {
     "heading": 320,
     "tilt": 47.5,
   }
-  const handleCallback = (childData) =>
+  const handleLocationUpdate = (locationIndex) =>
   {
-    console.log(childData);
-    const location = { lat: locations.places[childData].latitude, lng: locations.places[childData].longitude };
-    console.log(location);
-    map.panTo(location);
+    const location = { lat: locations.places[locationIndex].latitude, lng: locations.places[locationIndex].longitude };
+    map?.panTo(location);
   } 
   let map;
   let isAnimating = false;
@@ -37,8 +35,8 @@ const Maps = () => {
     function LoadMap(){
       const google = window.google;
       map = new google.maps.Map(googlemap.current,  {
-        center: { lat: 52.498013281042056,  lng: 13.351595043107444 },
-        zoom: 13,
+        center: { lat: 50.14474,  lng: 11.05938 },
+        zoom: 17,
         mapId:"d78e050a3a97c54b",
         mapTypeControl: false,
         streetViewControl: false, 
@@ -116,7 +114,7 @@ const Maps = () => {
   return (
     <Fragment>
     <div id="map" ref={googlemap} />
-    <Carousel parentCallback = {handleCallback}/>
+    <Carousel updateLocation = {handleLocationUpdate}/>
     </Fragment>
   );
 };

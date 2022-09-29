@@ -60,9 +60,9 @@ const WheelControls = (slider) => {
 }
 
 const Carousel = (props) => {
-    const onTrigger = (message) => 
+    const onSliderChange = (message) => 
     {
-        props.parentCallback(message);
+        props.updateLocation(message);
     }
   const [sliderRef] = useKeenSlider(
     {
@@ -70,7 +70,7 @@ const Carousel = (props) => {
       rubberband: false,
       slideChanged(slider) 
       {
-        onTrigger(slider.track.details.rel);
+        onSliderChange(slider.track.details.rel);
       }
     },
     [WheelControls]
